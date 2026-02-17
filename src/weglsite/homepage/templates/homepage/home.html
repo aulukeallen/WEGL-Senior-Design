@@ -2,15 +2,29 @@
 <html>
 <head>
     <title>WEGL 91.1 FM</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/home.css' %}">
 </head>
 <body>
-    <h1>Welcome to the WEGL Administrative Platform!</h1>
+    <div id="WEGLheader" class="flexCenter">
+        <h1>Welcome to the WEGL Administrative Platform!</h1>
+        <hr id="customLine">          
+        <div id="logoutDiv">
+            <a href="">Logout</a>
+        </div>
+    </div>
 
-    <ul>
-        <li><a href="{% url 'djrecord:index' %}">DJ Record</a></li>
-        <li><a href="{% url 'physicalmedia:index' %}">Physical Media</a></li>
-        <li><a href="{% url 'dadreports:index' %}">DAD Reports</a></li>
-        <li><a href="{% url 'attendancetracker:index' %}">Attendance Tracker</a></li>
-    </ul>
+
+    <div id="buttonWrapper" class="flexCenter">
+        <a href="{% url 'djrecord:index' %}"><button class="landingBtn">DJ Record</button></a>
+        <a href="{% url 'physicalmedia:index' %}"><button class="landingBtn">Physical Media</button></a>
+        <a href="{% url 'dadreports:index' %}"><button class="landingBtn">DAD Reports</button></a>
+        <!-- adming if -->
+        <a href="{% url 'attendancetracker:index' %}"><button class="landingBtn">Attendance Tracker</button></a>
+        <!-- end admin if -->
+    </div>
+<footer style="width: 100%; background-color: #0b2341; color: #fff; text-align: center; padding: 30px 0; position: fixed; bottom: 0; left: 0;">
+    WEGL 91.1 FM
+</footer>
 </body>
 </html>
