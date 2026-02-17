@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Future site of the DJ Info App :D")
+    return render(request, "djrecord/index.html")

@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Future site of the Attendance Tracker!")
+    return render(request, "attendancetracker/index.html")
