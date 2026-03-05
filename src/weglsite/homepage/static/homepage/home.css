@@ -1,0 +1,59 @@
+#WEGLheader {
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+#buttonWrapper {
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+    #buttonWrapper {
+        gap: 10px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .landingBtn {
+        width: 100%;
+        padding: 18px 0;
+        font-size: 15px;
+    }
+}
+
+#customLine {
+    background-color: #cc4e0b;
+    height: 8px;
+    width: 98%;
+    border: none;
+    display: block;
+}
+
+#logoutDiv {
+    margin-left: 75%;
+}
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landingBtn {
+    background-color: white;
+    border: 3px solid black;
+    color: black;
+    padding: 25px 45px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background 0.1s, transform 0.1s;
+}
+
+.landingBtn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px) scale(1.01);
+}
