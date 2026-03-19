@@ -2,4 +2,11 @@
 <div class="content">
     <h2>DJ Record</h2>
     <!-- Page content goes here -->
+     <div>
+        {% for dj in data %}
+            <p>{{ dj.firstName }}</p>
+            <p>{{ dj.lastName }}</p>
+             <p>{{ dj.email }}</p>
+        {% endfor %}
+     </div>
 </div>
