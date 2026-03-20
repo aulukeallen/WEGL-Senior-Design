@@ -1,12 +1,26 @@
 {% include 'master_header.html' %}
 <div class="content">
     <h2>DJ Record</h2>
-    <!-- Page content goes here -->
-     <div>
+    <button style="margin-bottom: 16px;" onclick="alert('Add DJ form coming soon!')">Add DJ</button>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Date Joined</th>
+            <th>Actions</th>
+        </tr>
         {% for dj in data %}
-            <p>{{ dj.firstName }}</p>
-            <p>{{ dj.lastName }}</p>
-             <p>{{ dj.email }}</p>
+        <tr>
+            <td>{{ dj.firstName }}</td>
+            <td>{{ dj.lastName }}</td>
+            <td>{{ dj.email }}</td>
+            <td>{{ dj.joinDate }}</td>
+            <td>
+                <button onclick="alert('Edit DJ coming soon!')">Edit</button>
+                <button onclick="alert('Delete DJ coming soon!')" style="color: red;">Delete</button>
+            </td>
+        </tr>
         {% endfor %}
-     </div>
+    </table>
 </div>
