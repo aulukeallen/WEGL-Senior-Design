@@ -17,8 +17,23 @@
         <input type="submit" value="Submit">
     </form>
 
-    <h3>All Entries</h3>
-    {{ entries }}
-
-
+    {% if recentPlayback %}
+        <h3>Recent History</h3>
+        <ul>
+            {% for entry in recentPlayback %}
+                <li>{{ entry.title }} - {{ entry.artist }} - {{ entry.playDate }} - {{ entry.startTime }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recent playback available.</p>
+    {% endif %}
+    
+    {% if uploads %}
+        <h3>Recent Uploads</h3>
+        <ul>
+            {% for upload in uploads %}
+                <li>{{ upload.fileName }} - {{ upload.uploadDate }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>

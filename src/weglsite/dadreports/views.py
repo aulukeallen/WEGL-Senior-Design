@@ -23,6 +23,13 @@ def index(request):
     else:
         form = CSVUploadForm()
 
-    uploads = CSVUpload.objects.order_by('-uploadDate')
-    entries = AsplayEntry.objects.select_related('upload').order_by('-playDate', 'startTime')
-    return render(request, 'dadreports/index.html', {'uploads': uploads, 'form': form, 'entries': entries})
+    recentPlayback = AsplayEntry.objects.order_by("-playDate").exclude(group="IDS")[:20]
+    uploads = CSVUpload.objects.order_by("uploadDate")
+
+    context = {
+        "form": form,
+        "recentPlayback": recentPlayback,
+        "uploads": uploads
+    }
+
+    return render(request, 'dadreports/index.html', context)
