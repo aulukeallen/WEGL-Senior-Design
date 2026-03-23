@@ -1,4 +1,18 @@
 {% include 'master_header.html' %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+</style>
 <div class="content">
     <h2>DJ Record</h2>
     <button id="openAddModal" style="margin-bottom: 16px;">Add DJ</button>
@@ -22,6 +36,7 @@
                         data-firstname="{{ dj.firstName }}" 
                         data-lastname="{{ dj.lastName }}" 
                         data-email="{{ dj.email }}" 
+                        data-joindate="{{ dj.joinDate }}"
                         data-edit-url="{% url 'djrecord:dj-edit' dj.pk %}">
                     Edit
                 </button>
@@ -100,6 +115,15 @@
             document.getElementById('editFirstName').value = btn.dataset.firstname;
             document.getElementById('editLastName').value = btn.dataset.lastname;
             document.getElementById('editEmail').value = btn.dataset.email;
+            console.log('Join Date from button:', btn.dataset.joindate);
+            parseDate = new Date(btn.dataset.joindate);
+            console.log('Parsed Date:', parseDate);
+            try {
+                document.getElementById('editJoinDate').value = parseDate.toISOString().split('T')[0];
+            } catch (e) {
+                console.error('Error parsing date:', e);
+                document.getElementById('editJoinDate').value = '';
+            }
             // Set form action using Django URL from data attribute
             document.getElementById('editDjForm').action = btn.dataset.editUrl;
             openModal('editModal');
