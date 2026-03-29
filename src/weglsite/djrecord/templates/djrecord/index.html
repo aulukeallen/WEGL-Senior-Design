@@ -21,6 +21,7 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Date Joined</th>
+            <th>Shows</th>
         </tr>
         {% for dj in data %}
         <tr>
@@ -28,6 +29,7 @@
             <td>{{ dj.lastName }}</td>
             <td>{{ dj.email }}</td>
             <td>{{ dj.joinDate }}</td>
+            <td></td> <!-- figure out list of shows for each dj -->
         </tr>
         {% endfor %}
     </table>

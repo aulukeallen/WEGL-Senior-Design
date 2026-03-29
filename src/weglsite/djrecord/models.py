@@ -8,7 +8,6 @@ class DJ(models.Model):
     lastName = models.CharField(max_length=100)
     email = models.CharField(max_length=25, unique=True)
     joinDate = models.DateField("date dj joined wegl")
-
     def __str__(self):
         return f"{self.firstName} {self.lastName}"
 
