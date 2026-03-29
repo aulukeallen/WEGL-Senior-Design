@@ -12,13 +12,23 @@
         background-color: #f2f2f2;
         text-align: left;
     }
+    .flexButtons {
+        display: flex;
+        gap:20px;
+        margin-bottom: 20px;
+    }
 </style>
 <div class="content">
     <h2>DJ Record</h2>
-    <form method="get" style="margin-bottom: 20px;">
-        {{ form.search.label_tag }} {{ form.search }}
-        <button type="submit">Search</button>
-    </form>
+    <div class="flexButtons">
+        <form method="get" style="margin-bottom: 20px;">
+            {{ form.search.label_tag }} {{ form.search }}
+            <button type="submit">Search</button>
+        </form>
+        <div>
+            <button>List DJs hosting outside business hours</button>
+        </div>
+    </div>
     <table>
         <tr>
             <th>First Name</th>
