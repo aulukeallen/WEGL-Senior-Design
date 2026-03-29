@@ -15,14 +15,12 @@
 </style>
 <div class="content">
     <h2>DJ Record</h2>
-    <button id="openAddModal" style="margin-bottom: 16px;">Add DJ</button>
     <table>
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
             <th>Date Joined</th>
-            <th>Actions</th>
         </tr>
         {% for dj in data %}
         <tr>
@@ -30,114 +28,7 @@
             <td>{{ dj.lastName }}</td>
             <td>{{ dj.email }}</td>
             <td>{{ dj.joinDate }}</td>
-            <td>
-                <button class="openEditModal" 
-                        data-id="{{ dj.pk }}" 
-                        data-firstname="{{ dj.firstName }}" 
-                        data-lastname="{{ dj.lastName }}" 
-                        data-email="{{ dj.email }}" 
-                        data-joindate="{{ dj.joinDate }}"
-                        data-edit-url="{% url 'djrecord:dj-edit' dj.pk %}">
-                    Edit
-                </button>
-                <button class="openDeleteModal" 
-                        data-id="{{ dj.pk }}" 
-                        data-name="{{ dj.firstName }} {{ dj.lastName }}" 
-                        data-delete-url="{% url 'djrecord:dj-delete' dj.pk %}">
-                    Delete
-                </button>
-            </td>
         </tr>
         {% endfor %}
-    </table>
-    </div>
-
-    <!-- Add DJ Modal -->
-    <div id="addModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:24px; border-radius:8px; min-width:300px;">
-            <h3>Add DJ</h3>
-            <form id="addDjForm" action="{% url 'djrecord:dj-create' %}" method="post">
-                {% csrf_token %}
-                <label>First Name: <input name="firstName" required></label><br>
-                <label>Last Name: <input name="lastName" required></label><br>
-                <label>Email: <input name="email" type="email" required></label><br>
-                <label>Join Date: <input name="joinDate" type="date" required></label><br>
-                <button type="submit">Add</button>
-                <button type="button" onclick="closeModal('addModal')">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit DJ Modal -->
-    <div id="editModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:24px; border-radius:8px; min-width:300px;">
-            <h3>Edit DJ</h3>
-            <form id="editDjForm" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="dj_id" id="editDjId">
-                <label>First Name: <input name="firstName" id="editFirstName" required></label><br>
-                <label>Last Name: <input name="lastName" id="editLastName" required></label><br>
-                <label>Email: <input name="email" id="editEmail" type="email" required></label><br>
-                <label>Join Date: <input name="joinDate" id="editJoinDate" type="date" required></label><br>
-                <button type="submit">Save</button>
-                <button type="button" onclick="closeModal('editModal')">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Delete DJ Modal -->
-    <div id="deleteModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
-        <div style="background:#fff; padding:24px; border-radius:8px; min-width:300px;">
-            <h3>Delete DJ</h3>
-            <form id="deleteDjForm" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="dj_id" id="deleteDjId">
-                <p>Are you sure you want to delete <span id="deleteDjName"></span>?</p>
-                <button type="submit" style="color:red;">Delete</button>
-                <button type="button" onclick="closeModal('deleteModal')">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-    function closeModal(id) {
-        document.getElementById(id).style.display = 'none';
-    }
-    function openModal(id) {
-        document.getElementById(id).style.display = 'flex';
-    }
-    document.getElementById('openAddModal').onclick = function() {
-        openModal('addModal');
-    };
-    document.querySelectorAll('.openEditModal').forEach(btn => {
-        btn.onclick = function() {
-            document.getElementById('editDjId').value = btn.dataset.id;
-            document.getElementById('editFirstName').value = btn.dataset.firstname;
-            document.getElementById('editLastName').value = btn.dataset.lastname;
-            document.getElementById('editEmail').value = btn.dataset.email;
-            console.log('Join Date from button:', btn.dataset.joindate);
-            parseDate = new Date(btn.dataset.joindate);
-            console.log('Parsed Date:', parseDate);
-            try {
-                document.getElementById('editJoinDate').value = parseDate.toISOString().split('T')[0];
-            } catch (e) {
-                console.error('Error parsing date:', e);
-                document.getElementById('editJoinDate').value = '';
-            }
-            // Set form action using Django URL from data attribute
-            document.getElementById('editDjForm').action = btn.dataset.editUrl;
-            openModal('editModal');
-        };
-    });
-    document.querySelectorAll('.openDeleteModal').forEach(btn => {
-        btn.onclick = function() {
-            document.getElementById('deleteDjId').value = btn.dataset.id;
-            document.getElementById('deleteDjName').innerText = btn.dataset.name;
-            // Set form action using Django URL from data attribute
-            document.getElementById('deleteDjForm').action = btn.dataset.deleteUrl;
-            openModal('deleteModal');
-        };
-    });
-    </script>
     </table>
 </div>
