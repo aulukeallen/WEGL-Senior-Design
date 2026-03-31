@@ -16,8 +16,9 @@ def index(request):
         djs = djs.filter(
             Q(firstName__icontains=search_query) |
             Q(lastName__icontains=search_query) |
-            Q(email__icontains=search_query)
-        )
+            Q(email__icontains=search_query) |
+            Q(shows__name__icontains=search_query)
+        ).distinct()
     # Prefetch related shows for efficiency
     djs = djs.prefetch_related('shows')
     return render(request, "djrecord/index.html", {"djs": djs, "form": form})
