@@ -23,17 +23,22 @@ def index(request):
         ).distinct()
 
     if filter_outside_hours:
-        # 8am = 08:00:00, 8pm = 20:00:00
+        # 5pm = 17:00:00, 11pm = 23:00:00 for Mon-Fri (1-5), all hours for Sat/Sun (0,6)
         from django.db.models import OuterRef, Exists
         from .models import OnAirShow
-        # Only include DJs with at least one show outside 8am-8pm
         djs = djs.filter(
             Exists(
                 OnAirShow.objects.filter(
                     djs=OuterRef('pk'),
                     startTime__isnull=False
                 ).filter(
-                    Q(startTime__lt="08:00:00") | Q(startTime__gt="20:00:00")
+                    (
+                        # Mon-Fri: show is between 17:00 and 23:00 (inclusive)
+                        (Q(day__in=[1,2,3,4,5]) & Q(startTime__gte="17:00:00") & Q(startTime__lte="23:00:00"))
+                        |
+                        # Sat/Sun: any time
+                        (Q(day__in=[0,6]))
+                    )
                 )
             )
         )
