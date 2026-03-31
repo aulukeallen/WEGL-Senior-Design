@@ -37,13 +37,23 @@
             <th>Date Joined</th>
             <th>Shows</th>
         </tr>
-        {% for dj in data %}
+        {% for dj in djs %}
         <tr>
             <td>{{ dj.firstName }}</td>
             <td>{{ dj.lastName }}</td>
             <td>{{ dj.email }}</td>
             <td>{{ dj.joinDate }}</td>
-            <td></td> <!-- figure out list of shows for each dj -->
+            <td>
+                <div style="max-width: 400px; overflow-x: auto; white-space: nowrap;">
+                    {% if dj.shows.all %}
+                        {% for show in dj.shows.all %}
+                            <span style="display: inline-block; background: #e0e0e0; border-radius: 4px; padding: 2px 8px; margin-right: 6px; margin-bottom: 2px;">{{ show.name }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="color: #888;">No shows</span>
+                    {% endif %}
+                </div>
+            </td>
         </tr>
         {% endfor %}
     </table>
