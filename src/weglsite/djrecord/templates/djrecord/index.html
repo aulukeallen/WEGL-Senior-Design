@@ -24,9 +24,27 @@
         <form method="get" style="margin-bottom: 20px;">
             {{ form.search.label_tag }} {{ form.search }}
             <button type="submit">Search</button>
+            {% if filter_outside_hours %}
+                <input type="hidden" name="outside_hours" value="1">
+            {% endif %}
         </form>
         <div>
-            <button>List DJs hosting outside business hours</button>
+            {% if filter_outside_hours %}
+                <form method="get" style="display:inline;">
+                    {% if form.search.value %}
+                        <input type="hidden" name="search" value="{{ form.search.value }}">
+                    {% endif %}
+                    <button type="submit">Remove filter</button>
+                </form>
+            {% else %}
+                <form method="get" style="display:inline;">
+                    {% if form.search.value %}
+                        <input type="hidden" name="search" value="{{ form.search.value }}">
+                    {% endif %}
+                    <input type="hidden" name="outside_hours" value="1">
+                    <button type="submit">List DJs hosting outside business hours</button>
+                </form>
+            {% endif %}
         </div>
     </div>
     <table>
