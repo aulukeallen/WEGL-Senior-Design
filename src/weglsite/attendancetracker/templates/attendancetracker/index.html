@@ -15,8 +15,12 @@
 </style>
 <div class="content">
     <h2>Attendance Tracker</h2>
-    <!-- Page content goes here -->
-     <table>
+    <form method="get" style="margin-bottom: 20px;">
+        {{ form.search.label_tag }} {{ form.search }}
+        {{ form.sort.label_tag }} {{ form.sort }}
+        <button type="submit">Search/Sort</button>
+    </form>
+    <table>
         <tr>
             <th>Name</th>
             <th>Absences Count</th>

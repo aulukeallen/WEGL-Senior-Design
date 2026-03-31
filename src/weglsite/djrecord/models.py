@@ -8,7 +8,6 @@ class DJ(models.Model):
     lastName = models.CharField(max_length=100)
     email = models.CharField(max_length=25, unique=True)
     joinDate = models.DateField("date dj joined wegl")
-
     def __str__(self):
         return f"{self.firstName} {self.lastName}"
 
@@ -17,6 +16,17 @@ class DJ(models.Model):
 # - One-to-many relationship with Timeslot -
 class OnAirShow(models.Model):
     name = models.CharField(max_length=200)
+    DAYS = [
+        (0, "Sunday"),
+        (1, "Monday"),
+        (2, "Tuesday"),
+        (3, "Wednesday"),
+        (4, "Thursday"),
+        (5, "Friday"),
+        (6, "Saturday")
+    ]
+    day = models.IntegerField(choices=DAYS, null=True, blank=True)
+    startTime = models.TimeField(null=True, blank=True)
     djs = models.ManyToManyField(DJ, related_name="shows", blank=True)
 
     def __str__(self):
