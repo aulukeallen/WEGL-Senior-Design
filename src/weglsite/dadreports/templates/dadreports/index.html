@@ -1,4 +1,18 @@
 {% include 'master_header.html' %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+</style>
 <div class="content">
     <h2>DAD Reports</h2>
     <!-- Page content goes here -->
@@ -19,21 +33,43 @@
 
     {% if recentPlayback %}
         <h3>Recent History</h3>
-        <ul>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>Group</th>
+                <th>Play Date</th>
+                <th>Time</th>
+            </tr>
             {% for entry in recentPlayback %}
-                <li>{{ entry.title }} - {{ entry.artist }} - {{ entry.playDate }} - {{ entry.startTime }}</li>
+            <tr>
+                <td>{{ entry.title }}</td>
+                <td>{{ entry.artist }}</td>
+                <td>{{ entry.album }}</td>
+                <td>{{ entry.group }}</td>
+                <td>{{ entry.playDate }}</td>
+                <td>{{ entry.startTime }}</td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
     {% else %}
         <p>No recent playback available.</p>
     {% endif %}
     
     {% if uploads %}
         <h3>Recent Uploads</h3>
-        <ul>
+        <table>
+            <tr>
+                <th>File Name</th>
+                <th>Upload Date</th>
+            </tr>
             {% for upload in uploads %}
-                <li>{{ upload.fileName }} - {{ upload.uploadDate }}</li>
+            <tr>
+                <td>{{ upload.fileName }}</td>
+                <td>{{ upload.uploadDate }}</td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
     {% endif %}
 </div>

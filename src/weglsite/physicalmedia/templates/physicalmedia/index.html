@@ -1,6 +1,36 @@
 {% include 'master_header.html' %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+</style>
 <div class="content">
     <h2>Physical Media</h2>
     <!-- Page content goes here -->
-     {{ entries }}
+     <table>
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Medium</th>
+            <th>Sticker ID</th>
+        </tr>
+        {% for entry in entries %}
+        <tr>
+            <td>{{ entry.title }}</td>
+            <td>{{ entry.artist }}</td>
+            <td>{{ entry.medium }}</td>
+            <td>{{ entry.weglSticker }}</td>
+        </tr>
+    {% endfor %}
+     </table>
+     
 </div>

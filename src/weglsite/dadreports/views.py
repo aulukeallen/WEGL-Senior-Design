@@ -23,7 +23,10 @@ def index(request):
     else:
         form = CSVUploadForm()
 
-    recentPlayback = AsplayEntry.objects.order_by("-playDate").exclude(group="IDS")[:20]
+    
+    recentPlayback = AsplayEntry.objects.order_by("-playDate").exclude(group="IDS")
+    recentPlayback = recentPlayback.exclude(group='SHORTPSA')
+    recentPlayback = recentPlayback.exclude(group='LONGPSA')[:20]
     uploads = CSVUpload.objects.order_by("uploadDate")
 
     context = {

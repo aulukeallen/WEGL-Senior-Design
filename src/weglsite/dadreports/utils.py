@@ -22,8 +22,13 @@ def parse_start_time(val):
     return datetime.strptime(val, "%H:%M:%S").time()
 
 def parse_csv(file, filename):
+    alreadyUploaded = False
+    dupeFiles = CSVUpload.objects.filter(fileName=filename)
+    for e in dupeFiles:
+        if e.status is not "failed":
+            alreadyUploaded = True
 
-    if CSVUpload.objects.filter(fileName=filename).exists():
+    if CSVUpload.objects.filter(fileName=filename).exists() and not alreadyUploaded:
         raise ValueError(f"'{filename}' has already been uploaded.")
 
     upload = CSVUpload.objects.create(fileName=filename, status="pending")
@@ -49,9 +54,10 @@ def parse_csv(file, filename):
                     startTime = parse_start_time(row['ACTSTART']),
                     durationSeconds = parse_duration(row['ACTDUR']),
                     playDate = datetime.strptime(row['DATE'].strip(), '%m/%d/%Y').date()
-                ))
+                )) 
             except (ValueError, KeyError) as e:
-                raise ValueError(f"Error on row {i}: {e}")
+                #raise ValueError(f"Error on row {i}: {e}")
+                next(reader)
             
         AsplayEntry.objects.bulk_create(entries, batch_size=500)
 
