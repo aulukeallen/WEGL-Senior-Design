@@ -20,7 +20,7 @@
         <a href="{% url 'physicalmedia:index' %}"><button class="landingBtn">Physical Media</button></a>
         <a href="{% url 'dadreports:index' %}"><button class="landingBtn">DAD Reports</button></a>
         {% if request.user.is_superuser %}
-            <a href="{% url 'attendancetracker:index' %}"><button class="landingBtn">Attendance Tracker</button></a>
+            <a href="{% url 'djrecord:attendance' %}"><button class="landingBtn">Attendance Tracker</button></a>
         {% endif %}
     </div>
 <footer style="width: 100%; background-color: #0b2341; color: #fff; text-align: center; padding: 30px 0; position: fixed; bottom: 0; left: 0;">

@@ -22,6 +22,5 @@ urlpatterns = [
     path('djrecord/', include("djrecord.urls")),
     path('physicalmedia/', include("physicalmedia.urls")),
     path('dadreports/', include("dadreports.urls")),
-    path('attendancetracker/', include("attendancetracker.urls")),
     path('admin/', admin.site.urls),
 ]

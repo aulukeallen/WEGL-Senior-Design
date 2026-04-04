@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djrecord.apps.DjrecordConfig',
     'physicalmedia.apps.PhysicalmediaConfig',
-    'attendancetracker.apps.AttendancetrackerConfig',
     'dadreports.apps.DadreportsConfig',
     'homepage.apps.HomepageConfig',
 ]
