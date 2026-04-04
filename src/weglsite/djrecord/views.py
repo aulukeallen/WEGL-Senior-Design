@@ -1,11 +1,13 @@
 
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import DJ
+from .models import DJ, AttendanceRecord
 from .forms import DjInfoForm
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+@login_required
 def index(request):
     from .forms import DjInfoForm
     from .forms_search import DJSearchForm
@@ -45,3 +47,20 @@ def index(request):
 
     djs = djs.prefetch_related('shows')
     return render(request, "djrecord/index.html", {"djs": djs, "form": form, "filter_outside_hours": filter_outside_hours})
+
+@login_required
+def attendance(request):
+    records = AttendanceRecord.objects.all()
+    search_query = request.GET.get('search', '').strip()
+    sort_order = request.GET.get('sort', 'desc')
+
+    if search_query:
+        records = records.filter(dj__firstName__icontains=search_query) | records.filter(dj__lastName__icontains=search_query)
+
+    if sort_order == 'asc':
+        records = records.order_by('absenceCount')
+    else:
+        records = records.order_by('-absenceCount')
+
+    print(records)
+    return render(request, "djrecord/attendance.html", {"data": records})
