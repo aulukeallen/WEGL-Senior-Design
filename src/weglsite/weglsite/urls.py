@@ -23,4 +23,5 @@ urlpatterns = [
     path('physicalmedia/', include("physicalmedia.urls")),
     path('dadreports/', include("dadreports.urls")),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
