@@ -5,8 +5,11 @@ from .forms import CSVUploadForm
 from .models import CSVUpload, AsplayEntry
 from .utils import parse_csv
 from django.middleware.csrf import get_token
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+@login_required
 def index(request):
 
     token = get_token(request)

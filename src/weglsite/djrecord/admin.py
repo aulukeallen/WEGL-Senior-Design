@@ -1,7 +1,7 @@
 from django.contrib import admin
 from djrecord import forms
 from .forms import OnAirShowForm
-from .models import DJ, OnAirShow
+from .models import DJ, OnAirShow, AttendanceRecord
 
         
 # Register your models here.
@@ -17,3 +17,10 @@ class OnAirShowAdmin(admin.ModelAdmin):
     ordering = ('name',)
     search_fields = ('name',)
     form = OnAirShowForm
+
+# Register your models here.
+@admin.register(AttendanceRecord)
+class AttendanceRecordAdmin(admin.ModelAdmin):
+    list_display = ('dj', 'absenceCount')
+    ordering = ('-dj',)
+    readonly_fields = ('dj',)

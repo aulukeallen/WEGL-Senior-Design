@@ -1,4 +1,9 @@
 {% load static %}
+<!-- CSS Section: Place your stylesheet links here -->
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/master.css' %}">
+    {# Add more CSS files below as needed #}
+</head>
 <div id="masterHeader" class="flexCenter" style="justify-content: space-between; align-items: center; padding: 10px 30px; background-color: #0b2341; color: #fff;">
     <div>
         <a href="{% url 'homepage:index' %}" style="color: #fff; text-decoration: none; font-size: 1.2em;">
@@ -9,7 +14,7 @@
         WEGL 91.1 FM Admin
     </div>
     <div>
-        <a href="/admin/login/" style="float: right; margin-top: 20px;"><button type="button">Admin Login</button></a>
+        <a id="adminLogin" href="/admin/login/" style="float: right; margin-top:-15px;">Admin Login</a>
     </div>
 </div>
 <hr style="margin: 0; border: none; border-top: 2px solid #fff;">
