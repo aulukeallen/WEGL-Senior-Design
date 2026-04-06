@@ -7,6 +7,16 @@ from .forms import DjInfoForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
+show_dict = {
+    0 : "Monday",
+    1 : "Tuesday",
+    2 : "Wednesday",
+    3 : "Thursday",
+    4 : "Friday",
+    5 : "Saturday",
+    6 : "Sunday"
+}
+
 @login_required
 def index(request):
     from .forms import DjInfoForm
@@ -64,3 +74,40 @@ def attendance(request):
 
     print(records)
     return render(request, "djrecord/attendance.html", {"data": records})
+
+@login_required
+def clock_in(request):
+    # Get the DJ associated with the current user
+    try:
+        dj = request.user.dj_profile
+    except DJ.DoesNotExist:
+        return HttpResponse("No DJ profile associated with this user.", status=403)
+
+    # Get current time and weekday
+    import datetime
+    now = datetime.datetime.now()
+    current_time = now.time()
+    current_weekday = (now.weekday() + 1) % 7
+
+    # Find shows for this DJ within ±15 minutes of now
+    from .models import OnAirShow
+    time_window_start = (datetime.datetime.combine(now.date(), current_time) - datetime.timedelta(minutes=15)).time()
+    time_window_end = (datetime.datetime.combine(now.date(), current_time) + datetime.timedelta(minutes=15)).time()
+
+    for show in OnAirShow.objects.filter(djs=dj):
+        print(current_weekday)
+        print(f"Show: {show.name}, Day: {show.day}, Start Time: {show.startTime}")
+    # Get shows for today (by weekday) and within the time window
+    shows = OnAirShow.objects.filter(
+        djs=dj,
+        day=current_weekday,
+        startTime__gte=time_window_start,
+        startTime__lte=time_window_end
+    )
+    print('endpoint')
+    print(shows)
+    for show in shows:
+        print(show.name, show.startTime)
+
+    # For demonstration, just render a page with the found shows
+    return render(request, "djrecord/clockin.html", {"dj": dj, "shows": shows, "now": now})
