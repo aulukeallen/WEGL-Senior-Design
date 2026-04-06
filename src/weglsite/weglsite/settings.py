@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'physicalmedia.apps.PhysicalmediaConfig',
     'dadreports.apps.DadreportsConfig',
     'homepage.apps.HomepageConfig',
-    'django_q',
+    # 'django_q',
 ]
 
 MIDDLEWARE = [
@@ -85,17 +85,17 @@ DATABASES = {
     }
 }
 
-# Q_Cluster for cron job-like functionality
-Q_CLUSTER = {
-    'name': 'WEGL',
-    'workers': 4,
-    'recycle': 500,
-    'timeout': 60,
-    'retry': 120,
-    'queue_limit': 50,
-    'bulk': 10,
-    'orm': 'default',
-}
+# # Q_Cluster for cron job-like functionality
+# Q_CLUSTER = {
+#     'name': 'WEGL',
+#     'workers': 4,
+#     'recycle': 500,
+#     'timeout': 60,
+#     'retry': 120,
+#     'queue_limit': 50,
+#     'bulk': 10,
+#     'orm': 'default',
+# }
 
 
 # Password validation

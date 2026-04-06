@@ -3,6 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import DJ, AttendanceRecord
+from .models import OnAirShowDJ
 from .forms import DjInfoForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -105,9 +106,16 @@ def clock_in(request):
         startTime__lte=time_window_end
     )
     print('endpoint')
-    print(shows)
     for show in shows:
         print(show.name, show.startTime)
 
-    # For demonstration, just render a page with the found shows
-    return render(request, "djrecord/clockin.html", {"dj": dj, "shows": shows, "now": now})
+    # Set present=True for each OnAirShowDJ record for these shows
+    
+    for show in shows:
+        print(show.name)
+        onairshowdj = OnAirShowDJ.objects.filter(onairshow=show, dj=dj).first()
+        if onairshowdj:
+            onairshowdj.present = True
+            onairshowdj.save()
+
+    return render(request, "djrecord/clockin.html", {"dj": dj, "shows": shows, "now": now, "clocked_in": True if shows else False})
