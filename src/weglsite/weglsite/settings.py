@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'physicalmedia.apps.PhysicalmediaConfig',
     'dadreports.apps.DadreportsConfig',
     'homepage.apps.HomepageConfig',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,18 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+# Q_Cluster for cron job-like functionality
+Q_CLUSTER = {
+    'name': 'WEGL',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'retry': 120,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default',
 }
 
 
