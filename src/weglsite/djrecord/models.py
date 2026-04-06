@@ -29,6 +29,20 @@ def create_attendance_record_for_dj(sender, instance, created, **kwargs):
 # Represents an on-air show on WEGL 91.1 (WHAT a show is). 
 # - Many-to-many relationship with DJ -
 # - One-to-many relationship with Timeslot -
+
+# Through model for DJ-OnAirShow relationship with attendance boolean
+class OnAirShowDJ(models.Model):
+    onairshow = models.ForeignKey('OnAirShow', on_delete=models.CASCADE)
+    dj = models.ForeignKey('DJ', on_delete=models.CASCADE)
+    present = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('onairshow', 'dj')
+
+    def __str__(self):
+        return f"{self.dj} in {self.onairshow} - Present: {self.present}"
+
+
 class OnAirShow(models.Model):
     name = models.CharField(max_length=200)
     DAYS = [
@@ -42,7 +56,7 @@ class OnAirShow(models.Model):
     ]
     day = models.IntegerField(choices=DAYS, null=True, blank=True)
     startTime = models.TimeField(null=True, blank=True)
-    djs = models.ManyToManyField(DJ, related_name="shows", blank=True)
+    djs = models.ManyToManyField(DJ, through='OnAirShowDJ', related_name="shows", blank=True)
 
     def __str__(self):
         return self.name
