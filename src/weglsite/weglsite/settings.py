@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'physicalmedia.apps.PhysicalmediaConfig',
     'dadreports.apps.DadreportsConfig',
     'homepage.apps.HomepageConfig',
-    # 'django_q',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
