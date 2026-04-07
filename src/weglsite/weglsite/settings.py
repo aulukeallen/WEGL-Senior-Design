@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +41,7 @@ INSTALLED_APPS = [
     'djrecord.apps.DjrecordConfig',
     'physicalmedia.apps.PhysicalmediaConfig',
     'dadreports.apps.DadreportsConfig',
-    'homepage.apps.HomepageConfig',
-    # 'django_q',
+    'homepage.apps.HomepageConfig'
 ]
 
 MIDDLEWARE = [
@@ -74,6 +74,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'weglsite.wsgi.application'
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+CELERY_BEAT_SCHEDULE = {
+    'check-absences-every-hour-15': {
+        'task': 'djrecord.tasks.check_absences',
+        'schedule': crontab(minute=15, hour='*'),
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -84,18 +94,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-# # Q_Cluster for cron job-like functionality
-# Q_CLUSTER = {
-#     'name': 'WEGL',
-#     'workers': 4,
-#     'recycle': 500,
-#     'timeout': 60,
-#     'retry': 120,
-#     'queue_limit': 50,
-#     'bulk': 10,
-#     'orm': 'default',
-# }
 
 
 # Password validation
