@@ -1,4 +1,53 @@
-<h1>{{ dj }}</h1>
-<h2>Clock In</h2>
-<h3>{{ now }}</h3>
-<h4>{{ shows }}</h4>
+
+{% include 'master_header.html' %}
+<style>
+.clockin-container {
+	max-width: 500px;
+	margin: 40px auto 0 auto;
+	background: #fff;
+	border-radius: 14px;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+	padding: 32px 28px 18px 28px;
+	text-align: center;
+}
+.clockin-container h1 {
+	color: #cc4e0b;
+	margin-bottom: 8px;
+}
+.clockin-container h2 {
+	color: #0b2341;
+	margin-bottom: 18px;
+}
+.clockin-status {
+	font-size: 1.2em;
+	margin: 24px 0 18px 0;
+	color: #143bd6;
+	font-weight: 500;
+}
+.clockin-time {
+	color: #555;
+	margin-bottom: 10px;
+}
+.clockin-footer {
+	margin-top: 32px;
+	font-size: 0.98em;
+	color: #888;
+	border-top: 1px solid #eee;
+	padding-top: 14px;
+}
+</style>
+<div class="clockin-container">
+	<h1>{{ dj }}</h1>
+	<h2>Clock In</h2>
+	<div class="clockin-time">{{ now }}</div>
+	<div class="clockin-status">
+		{% if show %}
+			{{ dj }} is clocked in for <strong>{{ show }}</strong>!
+		{% else %}
+			{{ dj }} has no show at this time.
+		{% endif %}
+	</div>
+	<div class="clockin-footer">
+		DJs may only clock in from 15 minutes before their scheduled show until 15 minutes after it begins.
+	</div>
+</div>

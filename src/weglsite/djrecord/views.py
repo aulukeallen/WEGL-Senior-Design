@@ -99,23 +99,23 @@ def clock_in(request):
         print(current_weekday)
         print(f"Show: {show.name}, Day: {show.day}, Start Time: {show.startTime}")
     # Get shows for today (by weekday) and within the time window
-    shows = OnAirShow.objects.filter(
+    show = OnAirShow.objects.filter(
         djs=dj,
         day=current_weekday,
         startTime__gte=time_window_start,
         startTime__lte=time_window_end
-    )
-    print('endpoint')
-    for show in shows:
+    ).first()
+
+    if show:
         print(show.name, show.startTime)
 
     # Set present=True for each OnAirShowDJ record for these shows
     
-    for show in shows:
+    if show:
         print(show.name)
         onairshowdj = OnAirShowDJ.objects.filter(onairshow=show, dj=dj).first()
         if onairshowdj:
             onairshowdj.present = True
             onairshowdj.save()
 
-    return render(request, "djrecord/clockin.html", {"dj": dj, "shows": shows, "now": now, "clocked_in": True if shows else False})
+    return render(request, "djrecord/clockin.html", {"dj": dj, "show": show, "now": now, "clocked_in": True if show else False})
