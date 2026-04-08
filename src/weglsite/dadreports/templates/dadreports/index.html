@@ -1,22 +1,33 @@
-{% include 'master_header.html' %}
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-    th {
-        background-color: #f2f2f2;
-        text-align: left;
-    }
-</style>
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'dadreports/css/styles.css' %}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+
 <div class="content">
     <h2>DAD Reports</h2>
-    <!-- Page content goes here -->
-     <h3>Upload a Monthly Report</h3>
+
+    <section class="upload-section">
+    <h3>Upload a Monthly Report</h3>
 
     {% if messages %}
     <div class="messages">
@@ -25,14 +36,41 @@
         {% endfor %}
     </div>
     {% endif %}
-    <form method="post" enctype="multipart/form-data">
+
+    <form method="post" enctype="multipart/form-data" class="upload-form">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
+        <div class="form-group">
+            <label for="id_csvFile">{{ form.csvFile.label }}</label>
+            {{ form.csvFile }}
+            <small class="help-text">{{ form.csvFile.help_text }}</small>
+            {% if form.csvFile.errors %}
+                <div class="field-error">{{ form.csvFile.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn-submit">Upload Report</button>
     </form>
+    </section>
 
     {% if page_obj.object_list %}
-        <h3>Recent History</h3>
+        <div class="table-header">
+            <h3>Recent History</h3>
+            <form method="get" class="table-controls">
+                <input type="text" name="search" placeholder="Search title, artist, album..."
+                    value="{{ search }}" class="search-bar">
+                <select name="group" class="filter-select">
+                    <option value="">All Groups</option>
+                    {% for group in groups %}
+                        <option value="{{ group }}" {% if group == filterGroup %}selected{% endif %}>
+                            {{ group }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="date" name="date" value="{{ filterDate }}" class="filter-date">
+                <button type="submit" class="btn-filter">Search</button>
+                <a href="?" class="btn-clear">Clear</a>
+            </form>
+        </div>
+
         <table>
             <tr>
                 <th>Title</th>
@@ -60,8 +98,8 @@
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <a href="?page=1&search={{ search }}&group={{ filterGroup }}&date={{ filterDate }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&search={{ search }}&group={{ filterGroup }}&date={{ filterDate }}">previous</a>
             {% endif %}
 
             <span class="current">
@@ -91,3 +129,4 @@
         </table>
     {% endif %}
 </div>
+{% endblock %}

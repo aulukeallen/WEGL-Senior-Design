@@ -7,6 +7,7 @@ from .utils import parse_csv
 from django.middleware.csrf import get_token
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 # Create your views here.
 
@@ -28,11 +29,29 @@ def index(request):
         form = CSVUploadForm()
 
     
-    recentPlayback = AsplayEntry.objects.order_by("-playDate").exclude(group="IDS")
-    recentPlayback = recentPlayback.exclude(group='SHORTPSA')
-    recentPlayback = recentPlayback.exclude(group='LONGPSA')
+    allPlayback = AsplayEntry.objects.order_by("-playDate")
 
-    paginator = Paginator(recentPlayback, 25)
+    recentPlayback = allPlayback.exclude(group="IDS").exclude(group='SHORTPSA').exclude(group='LONGPSA')
+
+    search = request.GET.get("search", "")
+    filterGroup = request.GET.get("group", "")
+    filterDate = request.GET.get("date", "")
+
+    if search:
+        allPlayback = allPlayback.filter(
+            Q(title__icontains=search) |
+            Q(artist__icontains=search) |
+            Q(album__icontains=search)
+        )
+        paginator = Paginator(allPlayback, 25)
+    else:
+        paginator = Paginator(recentPlayback, 25)
+    if filterGroup:
+        allPlayback = allPlayback.filter(group=filterGroup)
+    if filterDate:
+        allPlayback = allPlayback.filter(playDate=filterDate)
+
+    #paginator = Paginator(allPlayback, 25)
     pageNumber = request.GET.get("page")
     pageObj = paginator.get_page(pageNumber)
 
@@ -41,8 +60,11 @@ def index(request):
     context = {
         "form": form,
         "page_obj": pageObj,
-        #"recentPlayback": recentPlayback,
-        "uploads": uploads
+        "uploads": uploads,
+        "search": search,
+        "filterGroup": filterGroup,
+        "filterDate": filterDate,
+        "groups": AsplayEntry.objects.values_list("group", flat=True).distinct()
     }
 
     return render(request, 'dadreports/index.html', context)
