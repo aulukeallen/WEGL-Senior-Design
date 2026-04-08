@@ -6,6 +6,7 @@ from .models import CSVUpload, AsplayEntry
 from .utils import parse_csv
 from django.middleware.csrf import get_token
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -29,12 +30,18 @@ def index(request):
     
     recentPlayback = AsplayEntry.objects.order_by("-playDate").exclude(group="IDS")
     recentPlayback = recentPlayback.exclude(group='SHORTPSA')
-    recentPlayback = recentPlayback.exclude(group='LONGPSA')[:20]
+    recentPlayback = recentPlayback.exclude(group='LONGPSA')
+
+    paginator = Paginator(recentPlayback, 25)
+    pageNumber = request.GET.get("page")
+    pageObj = paginator.get_page(pageNumber)
+
     uploads = CSVUpload.objects.order_by("-uploadDate")
 
     context = {
         "form": form,
-        "recentPlayback": recentPlayback,
+        "page_obj": pageObj,
+        #"recentPlayback": recentPlayback,
         "uploads": uploads
     }
 

@@ -12,7 +12,7 @@ class MediaRecord(models.Model):
         "other": "Other"
     }
     medium = models.CharField(max_length=10, choices=MEDIA_CHOICES)
-    weglSticker = models.IntegerField(blank=True)
+    weglSticker = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} - {self.artist} on {self.medium}"
