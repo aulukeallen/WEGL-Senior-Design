@@ -38,20 +38,20 @@ def index(request):
     filterDate = request.GET.get("date", "")
 
     if search:
-        allPlayback = allPlayback.filter(
+        queryset = allPlayback.filter(
             Q(title__icontains=search) |
             Q(artist__icontains=search) |
             Q(album__icontains=search)
         )
-        paginator = Paginator(allPlayback, 25)
     else:
-        paginator = Paginator(recentPlayback, 25)
-    if filterGroup:
-        allPlayback = allPlayback.filter(group=filterGroup)
-    if filterDate:
-        allPlayback = allPlayback.filter(playDate=filterDate)
+        queryset = recentPlayback
 
-    #paginator = Paginator(allPlayback, 25)
+    if filterGroup:
+        queryset = queryset.filter(group=filterGroup)
+    if filterDate:
+        queryset = queryset.filter(playDate=filterDate)
+
+    paginator = Paginator(queryset, 50)
     pageNumber = request.GET.get("page")
     pageObj = paginator.get_page(pageNumber)
 

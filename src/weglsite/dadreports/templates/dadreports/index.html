@@ -25,7 +25,7 @@
 
 <div class="content">
     <h2>DAD Reports</h2>
-
+    {% if request.user.is_superuser %}
     <section class="upload-section">
     <h3>Upload a Monthly Report</h3>
 
@@ -50,47 +50,47 @@
         <button type="submit" class="btn-submit">Upload Report</button>
     </form>
     </section>
+    {% endif %}
 
+    <div class="table-header">
+        <h3>Recent History</h3>
+        <form method="get" class="table-controls">
+            <input type="text" name="search" placeholder="Search title, artist, album..."
+                value="{{ search }}" class="search-bar">
+            <select name="group" class="filter-select">
+                <option value="">All Groups</option>
+                {% for group in groups %}
+                    <option value="{{ group }}" {% if group == filterGroup %}selected{% endif %}>
+                        {{ group }}
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="date" name="date" value="{{ filterDate }}" class="filter-date">
+            <button type="submit" class="btn-filter">Search</button>
+            <a href="?" class="btn-clear">Clear</a>
+        </form>
+    </div>
     {% if page_obj.object_list %}
-        <div class="table-header">
-            <h3>Recent History</h3>
-            <form method="get" class="table-controls">
-                <input type="text" name="search" placeholder="Search title, artist, album..."
-                    value="{{ search }}" class="search-bar">
-                <select name="group" class="filter-select">
-                    <option value="">All Groups</option>
-                    {% for group in groups %}
-                        <option value="{{ group }}" {% if group == filterGroup %}selected{% endif %}>
-                            {{ group }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <input type="date" name="date" value="{{ filterDate }}" class="filter-date">
-                <button type="submit" class="btn-filter">Search</button>
-                <a href="?" class="btn-clear">Clear</a>
-            </form>
-        </div>
-
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Artist</th>
-                <th>Album</th>
-                <th>Group</th>
-                <th>Play Date</th>
-                <th>Time</th>
-            </tr>
-            {% for entry in page_obj %}
-            <tr>
-                <td>{{ entry.title }}</td>
-                <td>{{ entry.artist }}</td>
-                <td>{{ entry.album }}</td>
-                <td>{{ entry.group }}</td>
-                <td>{{ entry.playDate }}</td>
-                <td>{{ entry.startTime }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Album</th>
+            <th>Group</th>
+            <th>Play Date</th>
+            <th>Time</th>
+        </tr>
+        {% for entry in page_obj %}
+        <tr>
+            <td>{{ entry.title }}</td>
+            <td>{{ entry.artist }}</td>
+            <td>{{ entry.album }}</td>
+            <td>{{ entry.group }}</td>
+            <td>{{ entry.playDate }}</td>
+            <td>{{ entry.startTime }}</td>
+        </tr>
+        {% endfor %}
+    </table>
     {% else %}
         <p>No recent playback available.</p>
     {% endif %}
@@ -102,13 +102,15 @@
                 <a href="?page={{ page_obj.previous_page_number }}&search={{ search }}&group={{ filterGroup }}&date={{ filterDate }}">previous</a>
             {% endif %}
 
+            
+
             <span class="current">
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
             </span>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number}}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <a href="?page={{ page_obj.next_page_number }}&search={{ search }}&group={{ filterGroup }}&date={{ filterDate }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&search={{ search }}&group={{ filterGroup }}&date={{ filterDate }}">last &raquo;</a>
             {% endif %}
         </span>
     </div>
