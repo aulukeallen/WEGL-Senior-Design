@@ -52,8 +52,7 @@
     </section>
     {% endif %}
 
-    <div class="table-header">
-        <h3>Recent History</h3>
+    <div class="table-header" style="display: flex; justify-content: space-between; align-items: center;">
         <form method="get" class="table-controls">
             <input type="text" name="search" placeholder="Search title, artist, album..."
                 value="{{ search }}" class="search-bar">
@@ -69,6 +68,7 @@
             <button type="submit" class="btn-filter">Search</button>
             <a href="?" class="btn-clear">Clear</a>
         </form>
+        <a href="{% url 'dadreports:stats' %}" style="text-align: right;">View Play Stats</a>
     </div>
     {% if page_obj.object_list %}
     <table>

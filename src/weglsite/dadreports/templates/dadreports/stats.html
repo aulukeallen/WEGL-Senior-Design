@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'dadreports/css/styles.css' %}">
+</head>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+</style>
+
+<div class="content">
+    <h2>DAD Reports - Play Statistics</h2>
+    
+    <div class="table-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <form method="get" class="table-controls">
+            <input type="text" name="search" placeholder="Search title or artist..."
+                value="{{ search }}" class="search-bar">
+            <select name="group_by" class="filter-select">
+                <option value="title" {% if groupBy == "title" %}selected{% endif %}>By Title</option>
+                <option value="artist" {% if groupBy == "artist" %}selected{% endif %}>By Artist</option>
+            </select>
+            <input type="date" name="date_from" value="{{ dateFrom }}" class="filter-date">
+            <input type="date" name="date_to" value="{{ dateTo }}" class="filter-date">
+
+            <input type="hidden" name="exclude_groups" value="{{ excludeGroups }}">
+
+            <button type="button" class="btn-filter" onclick="
+                var field = this.form.querySelector('[name=exclude_groups]');
+                field.value = field.value === 'true' ? 'false' : 'true';
+                this.form.submit();
+            ">{% if excludeGroups == "true" %}Show IDS/PSA{% else %}Hide IDS/PSA{% endif %}</button>
+
+            <button type="submit" class="btn-filter">Search</button>
+            <a href="{% url 'dadreports:stats' %}" class="btn-clear">Clear</a>
+        </form>
+        <a href="{% url 'dadreports:export_stats' %}?search={{ search }}&group_by={{ groupBy }}&date_from={{ dateFrom }}&date_to={{ dateTo }}&exclude_groups={{ excludeGroups }}">
+            Export CSV
+        </a>
+        <a href="{% url 'dadreports:index' %}" style="margin-bottom: 0.05em;">← Back to Reports</a>
+    </div>
+    
+
+    {% if page_obj.object_list %}
+        <table>
+            <tr>
+                {% if groupBy == "artist" %}
+                    <th>Artist</th>
+                {% else %}
+                    <th>Title</th>
+                    <th>Artist</th>
+                {% endif %}
+                <th>Play Count</th>
+            </tr>
+            {% for entry in page_obj %}
+            <tr>
+                {% if groupBy == "artist" %}
+                    <td>{{ entry.artist }}</td>
+                {% else %}
+                    <td>{{ entry.title }}</td>
+                    <td>{{ entry.artist }}</td>
+                {% endif %}
+                <td>{{ entry.playCount }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&search={{ search }}&group_by={{ groupBy }}&date_from={{ dateFrom }}&date_to={{ dateTo }}&exclude_groups={{ excludeGroups }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&search={{ search }}&group_by={{ groupBy }}&date_from={{ dateFrom }}&date_to={{ dateTo }}&exclude_groups={{ excludeGroups }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&search={{ search }}&group_by={{ groupBy }}&date_from={{ dateFrom }}&date_to={{ dateTo }}&exclude_groups={{ excludeGroups }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&search={{ search }}&group_by={{ groupBy }}&date_from={{ dateFrom }}&date_to={{ dateTo }}&exclude_groups={{ excludeGroups }}">last &raquo;</a>
+            {% endif %}
+        </span> 
+    </div>
+</div>
+{% endblock %}
