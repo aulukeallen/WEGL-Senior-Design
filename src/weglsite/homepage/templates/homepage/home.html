@@ -1,11 +1,15 @@
+
 <!DOCTYPE html>
 <html>
+{% block content %}
+{% block extra_css %}
 <head>
-    <title>WEGL 91.1 FM</title>
+    <title>WEGL 91.1 FM - Home</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'homepage/home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/css/home.css' %}">
 </head>
-<body>
+
+<body style="font-family: 'Noto Sans', sans-serif;">
     <div id="WEGLheader" class="flexCenter">
         <h1>Welcome to the WEGL Administrative Platform!</h1>
         <hr id="customLine">
@@ -27,4 +31,6 @@
     WEGL 91.1 FM
 </footer>
 </body>
+{% endblock %}
+{% endblock %}
 </html>

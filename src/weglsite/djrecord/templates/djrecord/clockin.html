@@ -1,5 +1,6 @@
-
+{% extends "base.html" %}
 {% include 'master_header.html' %}
+{% block content %}
 <style>
 .clockin-container {
 	max-width: 500px;
@@ -51,3 +52,4 @@
 		DJs may only clock in from 15 minutes before their scheduled show until 15 minutes after it begins.
 	</div>
 </div>
+{% endblock %}
