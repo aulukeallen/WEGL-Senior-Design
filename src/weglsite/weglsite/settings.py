@@ -30,6 +30,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = [
     'lwa0011.pythonanywhere.com',
     'wegltools.com',
+    'www.wegltools,com'
 ]
 
 
