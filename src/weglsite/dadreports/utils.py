@@ -6,7 +6,7 @@ from .models import CSVUpload, AsplayEntry
 REQUIRED_COLUMNS = {'CUT', 'TITLE', 'ARTIST', 'ALBUM', 'GROUP', 'DATE', 'ACTSTART', 'ACTDUR'}
 
 def parse_duration(val):
-    if val is None or val is "":
+    if val == None or val == "":
         return timedelta()
     val = val.strip()
     parts = val.split(":")
@@ -25,7 +25,7 @@ def parse_csv(file, filename):
     alreadyUploaded = False
     dupeFiles = CSVUpload.objects.filter(fileName=filename)
     for e in dupeFiles:
-        if e.status is not "failed":
+        if e.status != "failed":
             alreadyUploaded = True
 
     if CSVUpload.objects.filter(fileName=filename).exists() and not alreadyUploaded:
