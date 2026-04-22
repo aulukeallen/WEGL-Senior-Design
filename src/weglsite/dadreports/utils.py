@@ -25,7 +25,7 @@ def parse_csv(file, filename):
     alreadyUploaded = False
     dupeFiles = CSVUpload.objects.filter(fileName=filename)
     for e in dupeFiles:
-        if e.status != "failed":
+        if e.status is not "failed":
             alreadyUploaded = True
 
     if CSVUpload.objects.filter(fileName=filename).exists() and not alreadyUploaded:
