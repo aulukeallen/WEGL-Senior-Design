@@ -38,6 +38,7 @@ class OnAirShowDJ(models.Model):
 
     class Meta:
         unique_together = ('onairshow', 'dj')
+        db_table = 'djrecord_onairshow_djs'
 
     def __str__(self):
         return f"{self.dj} in {self.onairshow} - Present: {self.present}"
